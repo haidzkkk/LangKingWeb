@@ -15,32 +15,32 @@ const WordItem = ({ word, onEdit, onDelete }) => {
             <div className="flex justify-between items-start mb-4">
                 <div className="flex-1 space-y-3">
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1">Từ tiếng Anh</label>
+                        <label className="block text-lg font-semibold text-gray-700 mb-1">Từ tiếng Anh</label>
                         <input
                             type="text"
                             value={wordData.english}
                             onChange={(e) => handleChange('english', e.target.value)}
-                            className="w-full text-lg font-semibold text-gray-800 bg-transparent border-b border-gray-300 focus:border-green-500 outline-none px-1 py-0.5"
+                            className="w-full text-gray-600 bg-transparent border border-gray-300 rounded focus:border-green-500 outline-none px-1 py-0.5"
                             placeholder="Nhập từ tiếng Anh..."
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1">Phát âm tiếng Anh</label>
+                        <label className="block text-lg font-semibold text-gray-700 mb-1">Phát âm tiếng Anh</label>
                         <input
                             type="text"
                             value={wordData.pronunciation}
                             onChange={(e) => handleChange('pronunciation', e.target.value)}
-                            className="w-full text-gray-600 bg-transparent border-b border-gray-300 focus:border-green-500 outline-none px-1 py-0.5"
+                            className="w-full text-gray-600 bg-transparent border border-gray-300 rounded focus:border-green-500 outline-none px-1 py-0.5"
                             placeholder="Nhập phát âm tiếng Anh..."
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1">Nghĩa tiếng Việt</label>
+                        <label className="block text-lg font-semibold text-gray-700 mb-1">Nghĩa tiếng Việt</label>
                         <input
                             type="text"
                             value={wordData.vietnamese}
                             onChange={(e) => handleChange('vietnamese', e.target.value)}
-                            className="w-full text-gray-600 bg-transparent border-b border-gray-300 focus:border-green-500 outline-none px-1 py-0.5"
+                            className="w-full text-gray-600 bg-transparent border border-gray-300 rounded focus:border-green-500 outline-none px-1 py-0.5"
                             placeholder="Nhập nghĩa tiếng Việt..."
                         />
                     </div>
@@ -59,7 +59,7 @@ const WordItem = ({ word, onEdit, onDelete }) => {
             </div>
             <div className="mt-2 space-y-3">
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Mô tả tiếng Anh</label>
+                    <label className="block text-lg font-semibold text-gray-700 mb-1">Mô tả tiếng Anh</label>
                     <textarea
                         value={wordData.description}
                         onChange={(e) => handleChange('description', e.target.value)}
@@ -69,7 +69,7 @@ const WordItem = ({ word, onEdit, onDelete }) => {
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">Mô tả tiếng Việt</label>
+                    <label className="block text-lg font-semibold text-gray-700 mb-1">Mô tả tiếng Việt</label>
                     <textarea
                         value={wordData.descriptionVietnamese}
                         onChange={(e) => handleChange('descriptionVietnamese', e.target.value)}

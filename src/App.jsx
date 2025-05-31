@@ -5,10 +5,23 @@ import NavigationBar from './compoment/navigationBar/navigationBar';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from './compoment/auth/Login';
 import LessonDetail from './compoment/lesson/LessonDetail';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <BrowserRouter>
+      <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+      />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<NavigationBar />}>
