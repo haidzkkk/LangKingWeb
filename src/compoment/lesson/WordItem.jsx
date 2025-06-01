@@ -11,7 +11,7 @@ const WordItem = ({ word, onEdit, onDelete }) => {
     };
 
     return (
-        <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+        <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
             <div className="flex justify-between items-start mb-4">
                 <div className="flex-1 space-y-3">
                     <div>

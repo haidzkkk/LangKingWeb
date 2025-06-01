@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { Resource } from "../../data/model/resouce";
 import firebaseManager from "../../service/FirebaseManager";
-
+import IDManager from "../../utils/IDManager";
 const processLessonData = (lessonResource) => {
     if (Resource.isError(lessonResource) || !lessonResource.data) {
         return lessonResource
@@ -45,7 +45,7 @@ const lessonSlice = createSlice({
                 state.currentLesson.data.words = {};
             }
             const newWord = {
-                id: Date.now(),
+                id: IDManager.createID(),
                 word: '',
                 position: Object.keys(state.currentLesson.data.words).length + 1
             };
@@ -73,7 +73,7 @@ const lessonSlice = createSlice({
 
                 if (categoryResource && !lessonResource){
                     const newLesson = {
-                        id: Date.now(),
+                        id: IDManager.createID(),
                         name: '',
                         content: '',
                         categoryId: categoryResource.data.id,
@@ -106,13 +106,14 @@ export const initLesson = createAsyncThunk(
     "data/fetchLeson",
     async ({ categoryId, lessonId }, thunkAPI) => {
 
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
         if (!categoryId && !lessonId) {
             return thunkAPI.rejectWithValue("No data available");
         }
 
         const category = await firebaseManager.getObject(`categories/${categoryId}`);
+        if (Resource.isError(category)) {
+            return thunkAPI.rejectWithValue(category.message);
+        }
         if (categoryId && !lessonId) {
             return {
                 categoryResource: category,
@@ -161,6 +162,10 @@ export const postSaveLesson = createAsyncThunk(
                 lessonToSave.position = maxPosition + 1;
             }
 
+            // Sort words by position
+            lessonToSave.words = Object.values(lessonToSave.words).sort((a, b) => a.position - b.position);
+            lessonToSave.words = Object.fromEntries(lessonToSave.words.map((word, index) => [word.id, { ...word, position: index + 1 }]));
+
             const data = isNewLesson ?
                 await firebaseManager.push(`categories/${lessonSave.categoryId}/lessons/${lessonToSave.id}`, lessonToSave) :
                 await firebaseManager.overwrite(`categories/${lessonSave.categoryId}/lessons/${lessonSave.id}`, lessonToSave);
@@ -173,6 +178,18 @@ export const postSaveLesson = createAsyncThunk(
         }
     }
 );
+
+
+export const updateLessonPosition = async (categoryId) => {
+    const lessons = await firebaseManager.getObject(`categories/${categoryId}/lessons`);
+    if (Resource.isError(lessons)) {
+        return
+    }
+    const sortedLessons = Object.values(lessons.data).sort((a, b) => a.position - b.position);
+    sortedLessons.forEach((lesson, index) => {
+        firebaseManager.overwrite(`categories/${categoryId}/lessons/${lesson.id}`, { ...lesson, position: index + 1 });
+    });
+}
 
 export const { resetLesson, setCategoryId, updateLesson, addNewLesson, updateName, updateContent, addNewWord, updateWord, deleteWord, resetSaveLesson } = lessonSlice.actions;
 export default lessonSlice.reducer;

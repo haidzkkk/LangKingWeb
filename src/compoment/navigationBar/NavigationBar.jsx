@@ -2,12 +2,16 @@ import { NavLink, useLocation, Outlet, useNavigate } from "react-router-dom";
 import './NavigationBarStyle.scss'
 import userIcon from '../../assets/ic_user.png';
 import { useEffect, useRef, useState } from "react";
+import { logout } from "../auth/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const NavigationBar = () => {
     const [open, setOpen] = useState(false);
     const menuRef = useRef(null);
     const location = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { currentUser } = useSelector(state => state.authState);
 
     const toggleMenu = () => setOpen(!open);
 
@@ -23,9 +27,16 @@ const NavigationBar = () => {
     }, []);
 
     const handleLogout = () => {
+        dispatch(logout());
         setOpen(false);
         navigate('/login');
     };
+
+
+    const hanldeShowProfile = () => {
+        setOpen(false);
+        navigate(`/user/${currentUser.data.id}`);
+    }
 
     const isHomeActive = location.pathname === "/" || location.pathname === "/home";
 
@@ -59,7 +70,7 @@ const NavigationBar = () => {
                         className="flex items-center space-x-4 cursor-pointer select-none"
                         onClick={toggleMenu}
                     >
-                        <p className="text-xl font-medium ml-2">Tôi  </p>
+                        <p className="text-xl font-medium ml-2">{currentUser.data.fullName}</p>
                         <img
                             src={userIcon}
                             alt="Avatar"
@@ -76,10 +87,7 @@ const NavigationBar = () => {
                     <ul className="py-2">
                         <li
                             className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => {
-                                setOpen(false);
-                                navigate('/profile');
-                            }}
+                            onClick={hanldeShowProfile}
                         >Chỉnh sửa
                         </li>
                         <li

@@ -25,7 +25,7 @@ const LessonCard = ({ lesson, categoryId, isEditing }) => {
     return (
         <>
             <div
-                className="relative flex flex-col items-center p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow group cursor-pointer"
+                className="relative flex flex-col bg-gray-100 items-center p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow group cursor-pointer"
                 onClick={() => navigate(`/lesson?lessonId=${lesson.id}&categoryId=${categoryId}`)}
             >
                 {isEditing && (

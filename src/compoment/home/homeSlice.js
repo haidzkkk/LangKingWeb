@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { Resource } from "../../data/model/resouce";
 import firebaseManager from "../../service/FirebaseManager";
+import IDManager from "../../utils/IDManager";
 
 const homeSlice = createSlice({
     name: "category",
@@ -76,7 +77,9 @@ export const listenToCategories = (dispatch) => {
     const callback = (data) => {
         if (data) {
             const formatted = Object.entries(data).map(([id, value]) => ({ id, ...value }));
-            dispatch(updateCategories(Resource.success(formatted)));
+            const sortedEntries = Object.values(formatted)
+                .sort((a, b) => (a.position || 0) - (b.position || 0));
+            dispatch(updateCategories(Resource.success(sortedEntries)));
         } else {
             dispatch(updateCategories(Resource.error("No data available")));
         }
@@ -147,12 +150,14 @@ export const addNewCategory = createAsyncThunk(
     async ({ name }, { getState, rejectWithValue }) => {
         try {
             const globalState = getState();
-            const maxPosition = globalState.homeState.categories.data
-                ? Math.max(...globalState.homeState.categories.data.map(cat => cat.position || 0))
+
+            const categories = globalState.homeState.categories.data || [];
+            const maxPosition = categories.length > 0
+                ? Math.max(...categories.map(cat => cat.position || 0))
                 : 0;
 
             const category = {
-                id: Date.now().toString(),
+                id: IDManager.createID(),
                 name: name,
                 position: maxPosition + 1,
             }

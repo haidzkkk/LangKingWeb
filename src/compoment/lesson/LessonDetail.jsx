@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Resource } from '../../data/model/resouce';
 import WordItem from './WordItem';
-import { initLesson, resetLesson, updateName, updateContent, addNewWord, updateWord, deleteWord, postSaveLesson, resetSaveLesson } from './LessonSlice';
+import { initLesson, resetLesson, updateName, updateContent, addNewWord, updateWord, deleteWord, postSaveLesson, resetSaveLesson, updateLessonPosition } from './LessonSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,6 +23,7 @@ const LessonDetail = () => {
                 toast.error(saveLesson.message);
             } else if (Resource.isSuccess(saveLesson)) {
                 toast.success('Lưu bài học thành công!');
+                updateLessonPosition(categoryId);
             }
             dispatch(resetSaveLesson());
         }
@@ -142,6 +143,7 @@ const LessonDetail = () => {
                                 <div className="mx-8">
                                     <input
                                         type="text"
+                                        placeholder="Tên bài học"
                                         value={currentLesson.data.name}
                                         onChange={(e) => handleChangeName(e.target.value)}
                                         className="bg-transparent border-b border-gray-300 focus:border-green-500 px-2 py-1 outline-none text-gray-700 font-medium text-center min-w-[300px]"
@@ -198,9 +200,13 @@ const LessonDetail = () => {
                             onChange={(e) => {
                                 handleChangeContent(e.target.value);
                             }}
-                            className="w-full p-4 border border-gray-300 rounded-lg focus:border-green-500 outline-none text-gray-700 font-medium overflow-hidden"
+                            className="mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 scrollbar-hide"
                             placeholder="Nhập nội dung bài học..."
-                            rows={1}
+                            rows={10}
+                            style={{
+                                scrollbarWidth: 'none',  /* Firefox */
+                                msOverflowStyle: 'none',  /* Internet Explorer 10+ */
+                            }}
                         />
                     </div>
 
