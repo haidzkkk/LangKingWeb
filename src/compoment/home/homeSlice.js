@@ -75,6 +75,7 @@ const homeSlice = createSlice({
 
 export const listenToCategories = (dispatch) => {
     const callback = (data) => {
+        console.log("data: ", data);
         if (data) {
             const formatted = Object.entries(data).map(([id, value]) => ({ id, ...value }));
             const sortedEntries = Object.values(formatted)

@@ -2,7 +2,7 @@ import './App.css'
 import './styles/scrollbar.css'
 import HomePage from './compoment/home/HomePage';
 import UserPage from './compoment/user/UserPage';
-import NavigationBar from './compoment/navigationBar/navigationBar';
+import NavigationBar from './compoment/navigationBar/NavigationBar';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from './compoment/auth/Login';
 import LessonDetail from './compoment/lesson/LessonDetail';
